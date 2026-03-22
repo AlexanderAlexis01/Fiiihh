@@ -1,5 +1,5 @@
 const fish = document.getElementById('fish');
-const audio = new Audio('/squeaky.mp3');
+const audio = new Audio('squeaky.mp3');
 
 fish.addEventListener('click', () => {
   fish.classList.remove('bounce');

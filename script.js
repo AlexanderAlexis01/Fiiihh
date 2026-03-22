@@ -1,6 +1,7 @@
-const fish = document.querySelector('.center-image');
+const fish = document.getElementById('fish');
 const audio = new Audio('squeaky.mp3');
 
+// Fish click handler
 fish.addEventListener('click', () => {
   fish.classList.remove('bounce');
   void fish.offsetWidth;
@@ -13,3 +14,72 @@ fish.addEventListener('click', () => {
 fish.addEventListener('animationend', () => {
   fish.classList.remove('bounce');
 });
+
+// Settings panel
+const settingsToggle = document.getElementById('settingsToggle');
+const settingsPanel = document.getElementById('settingsPanel');
+
+settingsToggle.addEventListener('click', () => {
+  settingsPanel.classList.toggle('open');
+  settingsToggle.classList.toggle('panel-open');
+  settingsToggle.textContent = settingsPanel.classList.contains('open') ? '▶' : '◀';
+});
+
+// Text inputs
+document.getElementById('titleInput').addEventListener('input', (e) => {
+  document.getElementById('titleText').textContent = e.target.value;
+});
+
+document.getElementById('iconTextInput').addEventListener('input', (e) => {
+  document.getElementById('iconText').textContent = e.target.value;
+});
+
+document.getElementById('button1Input').addEventListener('input', (e) => {
+  document.getElementById('button1').textContent = e.target.value;
+});
+
+document.getElementById('button2Input').addEventListener('input', (e) => {
+  document.getElementById('button2').textContent = e.target.value;
+});
+
+document.getElementById('button3Input').addEventListener('input', (e) => {
+  document.getElementById('button3').textContent = e.target.value;
+});
+
+// Image inputs
+document.getElementById('iconImageInput').addEventListener('input', (e) => {
+  document.getElementById('iconImage').src = e.target.value;
+});
+
+document.getElementById('fishImageInput').addEventListener('input', (e) => {
+  document.getElementById('fish').src = e.target.value;
+});
+
+// Color inputs
+document.getElementById('titleBarColor').addEventListener('input', (e) => {
+  const color = e.target.value;
+  document.querySelector('.title-bar').style.background = `linear-gradient(to bottom, ${color} 0%, ${adjustBrightness(color, -30)} 100%)`;
+});
+
+document.getElementById('bgColor').addEventListener('input', (e) => {
+  document.querySelector('.dialog-content').style.background = e.target.value;
+  document.querySelector('.dialog').style.background = e.target.value;
+});
+
+document.getElementById('pageBgColor').addEventListener('input', (e) => {
+  document.body.style.background = e.target.value;
+});
+
+document.getElementById('audioInput').addEventListener('input', (e) => {
+  audio.src = e.target.value;
+});
+
+// Helper function to adjust color brightness
+function adjustBrightness(color, percent) {
+  const num = parseInt(color.replace('#', ''), 16);
+  const amt = Math.round(2.55 * percent);
+  const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+  const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) + amt));
+  const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+  return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+}

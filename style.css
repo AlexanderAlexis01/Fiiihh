@@ -11,6 +11,74 @@ body {
   min-height: 100vh;
   background: #5a7e9f;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background 0.3s;
+}
+
+.settings-toggle {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #3c8fdb;
+  color: white;
+  border: none;
+  padding: 12px 8px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 4px 0 0 4px;
+  z-index: 1000;
+  transition: transform 0.3s;
+}
+
+.settings-toggle:hover {
+  background: #2c7fcb;
+}
+
+.settings-toggle.panel-open {
+  transform: translateY(-50%) translateX(-280px);
+}
+
+.settings-panel {
+  position: fixed;
+  right: -280px;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  overflow-y: auto;
+  transition: right 0.3s;
+  z-index: 999;
+}
+
+.settings-panel.open {
+  right: 0;
+}
+
+.settings-panel h3 {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.settings-panel label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.settings-panel input {
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.settings-panel input[type="color"] {
+  height: 35px;
+  padding: 2px;
 }
 
 .dialog {
@@ -29,11 +97,13 @@ body {
   font-weight: bold;
   font-size: 13px;
   border-bottom: 1px solid #0054a6;
+  transition: background 0.3s;
 }
 
 .dialog-content {
   padding: 15px;
   background: #f0f0f0;
+  transition: background 0.3s;
 }
 
 .icon-text {

@@ -8,22 +8,83 @@
   <script type="module" src="script.js"></script>
 </head>
 <body>
+  <button class="settings-toggle" id="settingsToggle">◀</button>
+  
+  <div class="settings-panel" id="settingsPanel">
+    <h3>Customize</h3>
+    
+    <label>
+      Title Text:
+      <input type="text" id="titleInput" value="WARNING">
+    </label>
+    
+    <label>
+      Icon Text:
+      <input type="text" id="iconTextInput" value="fissh">
+    </label>
+    
+    <label>
+      Icon Image URL:
+      <input type="text" id="iconImageInput" value="/pc-error-icon-8.png">
+    </label>
+    
+    <label>
+      Fish Image URL:
+      <input type="text" id="fishImageInput" value="/static-assets-upload14083937176938266492.png">
+    </label>
+    
+    <label>
+      Button 1:
+      <input type="text" id="button1Input" value="ok">
+    </label>
+    
+    <label>
+      Button 2:
+      <input type="text" id="button2Input" value="ok">
+    </label>
+    
+    <label>
+      Button 3:
+      <input type="text" id="button3Input" value="dont">
+    </label>
+    
+    <label>
+      Title Bar Color:
+      <input type="color" id="titleBarColor" value="#3c8fdb">
+    </label>
+    
+    <label>
+      Background Color:
+      <input type="color" id="bgColor" value="#f0f0f0">
+    </label>
+    
+    <label>
+      Page Background:
+      <input type="color" id="pageBgColor" value="#5a7e9f">
+    </label>
+    
+    <label>
+      Click Sound URL:
+      <input type="text" id="audioInput" value="/squeaky.mp3">
+    </label>
+  </div>
+
   <div class="dialog">
     <div class="title-bar">
-      <span class="title-text">WARNING</span>
+      <span class="title-text" id="titleText">WARNING</span>
     </div>
     <div class="dialog-content">
       <div class="icon-text">
-        <img src="pc-error-icon-8.png" alt="Error" class="error-icon">
-        <span class="fissh-text">fissh</span>
+        <img src="pc-error-icon-8.png" alt="Error" class="error-icon" id="iconImage">
+        <span class="fissh-text" id="iconText">fissh</span>
       </div>
       <div class="image-container">
         <img src="static-assets-upload14083937176938266492.png" alt="Fish" class="center-image" id="fish">
       </div>
       <div class="buttons">
-        <button>ok</button>
-        <button>ok</button>
-        <button>dont</button>
+        <button id="button1">ok</button>
+        <button id="button2">ok</button>
+        <button id="button3">dont</button>
       </div>
     </div>
   </div>

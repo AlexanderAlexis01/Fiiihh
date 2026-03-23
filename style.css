@@ -81,10 +81,31 @@ body {
   padding: 2px;
 }
 
+.download-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  background: #3c8fdb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.download-btn:hover {
+  background: #2c7fcb;
+}
+
+.download-btn:active {
+  background: #1c6fbb;
+}
+
 .dialog {
   width: 320px;
   background: #f0f0f0;
-  border: 1px solid #0054a6;
+  border: none;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
   overflow: hidden;

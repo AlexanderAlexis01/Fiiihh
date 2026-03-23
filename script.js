@@ -1,9 +1,31 @@
+
 const fish = document.getElementById('fish');
 const audio = new Audio('squeaky.mp3');
 const explosionAudio = new Audio('explosion.mp3');
 
 let clickCount = 0;
 let hasExploded = false;
+
+function initializeColors() {
+  const titleBarColor = document.getElementById('titleBarColor').value;
+  const bgColor = document.getElementById('bgColor').value;
+  const pageBgColor = document.getElementById('pageBgColor').value;
+  const titleTextColor = document.getElementById('titleTextColor').value;
+  const iconTextColor = document.getElementById('iconTextColor').value;
+  const buttonTextColor = document.getElementById('buttonTextColor').value;
+  
+  document.querySelector('.title-bar').style.background = `linear-gradient(to bottom, ${titleBarColor} 0%, ${adjustBrightness(titleBarColor, -30)} 100%)`;
+  document.querySelector('.dialog-content').style.background = bgColor;
+  document.querySelector('.dialog').style.background = bgColor;
+  document.body.style.background = pageBgColor;
+  document.getElementById('titleText').style.color = titleTextColor;
+  document.getElementById('iconText').style.color = iconTextColor;
+  document.querySelectorAll('.buttons button').forEach(btn => {
+    btn.style.color = buttonTextColor;
+  });
+}
+
+initializeColors();
 
 fish.addEventListener('click', () => {
   if (hasExploded) return;
@@ -72,6 +94,15 @@ document.getElementById('fishImageInput').addEventListener('input', (e) => {
   document.getElementById('fish').src = e.target.value;
 });
 
+function adjustBrightness(color, percent) {
+  const num = parseInt(color.replace('#', ''), 16);
+  const amt = Math.round(2.55 * percent);
+  const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+  const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) + amt));
+  const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+  return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+}
+
 document.getElementById('titleBarColor').addEventListener('input', (e) => {
   const color = e.target.value;
   document.querySelector('.title-bar').style.background = `linear-gradient(to bottom, ${color} 0%, ${adjustBrightness(color, -30)} 100%)`;
@@ -104,11 +135,11 @@ document.getElementById('audioInput').addEventListener('input', (e) => {
   audio.src = e.target.value;
 });
 
-function adjustBrightness(color, percent) {
-  const num = parseInt(color.replace('#', ''), 16);
-  const amt = Math.round(2.55 * percent);
-  const R = Math.max(0, Math.min(255, (num >> 16) + amt));
-  const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) + amt));
-  const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
-  return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
-}
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'site.zip';
+  a.click();
+  URL.revokeObjectURL(url);
+});

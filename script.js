@@ -1,5 +1,6 @@
 import JSZip from 'https://esm.sh/jszip@3.10.1';
-import saveAs from 'https://esm.sh/file-saver@2.0.5';
+import FileSaver from 'https://esm.sh/file-saver@2.0.5';
+const saveAs = FileSaver.saveAs || FileSaver;
 
 const fish = document.getElementById('fish');
 const audio = new Audio('squeaky.mp3');

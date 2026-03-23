@@ -1,21 +1,40 @@
 const fish = document.getElementById('fish');
 const audio = new Audio('squeaky.mp3');
+const explosionAudio = new Audio('explosion.mp3');
 
-// Fish click handler
+let clickCount = 0;
+let hasExploded = false;
+
 fish.addEventListener('click', () => {
-  fish.classList.remove('bounce');
-  void fish.offsetWidth;
-  fish.classList.add('bounce');
+  if (hasExploded) return;
   
-  audio.currentTime = 0;
-  audio.play();
+  clickCount++;
+  
+  if (clickCount >= 100) {
+    hasExploded = true;
+    fish.src = 'explosion.gif';
+    fish.classList.remove('bounce');
+    explosionAudio.play();
+    
+    setTimeout(() => {
+      fish.src = document.getElementById('fishImageInput').value;
+      clickCount = 0;
+      hasExploded = false;
+    }, 3000);
+  } else {
+    fish.classList.remove('bounce');
+    void fish.offsetWidth;
+    fish.classList.add('bounce');
+    
+    audio.currentTime = 0;
+    audio.play();
+  }
 });
 
 fish.addEventListener('animationend', () => {
   fish.classList.remove('bounce');
 });
 
-// Settings panel
 const settingsToggle = document.getElementById('settingsToggle');
 const settingsPanel = document.getElementById('settingsPanel');
 
@@ -25,7 +44,6 @@ settingsToggle.addEventListener('click', () => {
   settingsToggle.textContent = settingsPanel.classList.contains('open') ? '▶' : '◀';
 });
 
-// Text inputs
 document.getElementById('titleInput').addEventListener('input', (e) => {
   document.getElementById('titleText').textContent = e.target.value;
 });
@@ -46,7 +64,6 @@ document.getElementById('button3Input').addEventListener('input', (e) => {
   document.getElementById('button3').textContent = e.target.value;
 });
 
-// Image inputs
 document.getElementById('iconImageInput').addEventListener('input', (e) => {
   document.getElementById('iconImage').src = e.target.value;
 });
@@ -55,7 +72,6 @@ document.getElementById('fishImageInput').addEventListener('input', (e) => {
   document.getElementById('fish').src = e.target.value;
 });
 
-// Color inputs
 document.getElementById('titleBarColor').addEventListener('input', (e) => {
   const color = e.target.value;
   document.querySelector('.title-bar').style.background = `linear-gradient(to bottom, ${color} 0%, ${adjustBrightness(color, -30)} 100%)`;
@@ -70,11 +86,24 @@ document.getElementById('pageBgColor').addEventListener('input', (e) => {
   document.body.style.background = e.target.value;
 });
 
+document.getElementById('titleTextColor').addEventListener('input', (e) => {
+  document.getElementById('titleText').style.color = e.target.value;
+});
+
+document.getElementById('iconTextColor').addEventListener('input', (e) => {
+  document.getElementById('iconText').style.color = e.target.value;
+});
+
+document.getElementById('buttonTextColor').addEventListener('input', (e) => {
+  document.querySelectorAll('.buttons button').forEach(btn => {
+    btn.style.color = e.target.value;
+  });
+});
+
 document.getElementById('audioInput').addEventListener('input', (e) => {
   audio.src = e.target.value;
 });
 
-// Helper function to adjust color brightness
 function adjustBrightness(color, percent) {
   const num = parseInt(color.replace('#', ''), 16);
   const amt = Math.round(2.55 * percent);

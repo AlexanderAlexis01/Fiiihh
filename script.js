@@ -1,3 +1,5 @@
+import JSZip from 'https://esm.sh/jszip@3.10.1';
+import saveAs from 'https://esm.sh/file-saver@2.0.5';
 
 const fish = document.getElementById('fish');
 const audio = new Audio('squeaky.mp3');
@@ -135,11 +137,69 @@ document.getElementById('audioInput').addEventListener('input', (e) => {
   audio.src = e.target.value;
 });
 
-
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'site.zip';
-  a.click();
-  URL.revokeObjectURL(url);
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('downloadBtn');
+  const originalText = btn.textContent;
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+  
+  try {
+    const zip = new JSZip();
+    
+    const htmlClone = document.documentElement.cloneNode(true);
+    htmlClone.querySelector('#downloadBtn').remove();
+    
+    const head = htmlClone.querySelector('head');
+    head.querySelectorAll('meta[property^="og:"]').forEach(el => el.remove());
+    head.querySelectorAll('meta[property^="twitter:"]').forEach(el => el.remove());
+    head.querySelectorAll('link[rel="canonical"]').forEach(el => el.remove());
+    head.querySelectorAll('link[href*="websim"]').forEach(el => el.remove());
+    head.querySelectorAll('style.websim-injected').forEach(el => el.remove());
+    head.querySelectorAll('script[src*="websim"]').forEach(el => el.remove());
+    
+    let htmlContent = '<!DOCTYPE html>\n' + htmlClone.outerHTML;
+    htmlContent = htmlContent.replace(/src="\/([^"]+)"/g, 'src="$1"');
+    htmlContent = htmlContent.replace(/href="\/([^"]+)"/g, 'href="$1"');
+    htmlContent = htmlContent.replace(/value="\/([^"]+)"/g, 'value="$1"');
+    
+    zip.file('index.html', htmlContent);
+    
+    const cssResponse = await fetch('style.css');
+    const cssContent = await cssResponse.text();
+    zip.file('style.css', cssContent);
+    
+    const jsResponse = await fetch('script.js');
+    let jsContent = await jsResponse.text();
+    jsContent = jsContent.replace(/new Audio\('\/([^']+)'\)/g, "new Audio('$1')");
+    jsContent = jsContent.replace(/fish\.src = '\/([^']+)'/g, "fish.src = '$1'");
+    zip.file('script.js', jsContent);
+    
+    const assets = [
+      'squeaky.mp3',
+      'static-assets-upload14083937176938266492.png',
+      'explosion.gif',
+      'pc-error-icon-8.png',
+      'explosion.mp3'
+    ];
+    
+    for (const asset of assets) {
+      try {
+        const response = await fetch('/' + asset);
+        const blob = await response.blob();
+        zip.file(asset, blob);
+      } catch (err) {
+        console.warn(`Failed to fetch ${asset}:`, err);
+      }
+    }
+    
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    saveAs(zipBlob, 'fissh-warning.zip');
+    
+  } catch (error) {
+    console.error('Error creating zip:', error);
+    alert('Failed to create zip file. Check console for details.');
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
 });
